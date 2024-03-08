@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { UpdateInvoice, DeleteInvoice } from '@/app/ui/invoices/buttons';
 import InvoiceStatus from '@/app/ui/invoices/status';
 import { formatDateToLocal, formatCurrency } from '@/app/lib/utils';
-import { fetchFilteredCustomers } from '@/app/lib/data';
+import { fetchFilteredCustomers, fetchMyCustomers } from '@/app/lib/data';
 
 export default async function CustomersTable({
   query,
@@ -11,7 +11,7 @@ export default async function CustomersTable({
   query: string;
   currentPage: number;
 }) {
-  const customers = await fetchFilteredCustomers(query);
+  const customers = await fetchMyCustomers(query, currentPage);
 
   return (
     <div className="mt-6 flow-root">
@@ -84,7 +84,7 @@ export default async function CustomersTable({
                     </div>
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    {customer.customer_role_id}
+                    {Array.isArray(customer.roles) && customer.roles.join(', ')}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
                     {customer.email}

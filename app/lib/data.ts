@@ -94,7 +94,7 @@ export async function fetchCardData() {
   }
 }
 
-const ITEMS_PER_PAGE = 6;
+const ITEMS_PER_PAGE = 10;
 export async function fetchFilteredInvoices(
   query: string,
   currentPage: number,
@@ -205,17 +205,20 @@ export async function fetchMyCustomers(query: string, currentPage: number) {
 
   try {
     const customers = await sql<CustomersTable>`
-      SELECT
-        customers.id,
-        customers.name,
-        customers.email,
-        customers.image_url
-      FROM customers
-      WHERE
-        customers.name ILIKE ${`%${query}%`} OR
-        customers.email ILIKE ${`%${query}%`}
-      ORDER BY customers.name ASC
-      LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+    SELECT
+    customers.id,
+    customers.name,
+    customers.email,
+    customers.image_url,
+    array_remove(array_agg(customer_roles.name), NULL) as roles
+  FROM customers
+  LEFT JOIN customer_roles ON customer_roles.id = ANY(customers.customer_role_id)
+  WHERE
+    customers.name ILIKE ${`%${query}%`} OR
+    customers.email ILIKE ${`%${query}%`}
+  GROUP BY customers.id
+  ORDER BY customers.name ASC
+  LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
     `;
 
     return customers.rows;

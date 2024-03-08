@@ -65,6 +65,7 @@ export type InvoicesTable = {
 export type CustomersTable = {
   id: string;
   customer_role_id: string;
+  roles: string;
   name: string;
   email: string;
   image_url: string;
