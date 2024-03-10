@@ -7,6 +7,9 @@ export const formatCurrency = (amount: number) => {
   });
 };
 
+export function capitalizeFirstLetter(string: string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
 export const formatDateToLocal = (
   dateStr: string,
   locale: string = 'en-US',
@@ -21,6 +24,20 @@ export const formatDateToLocal = (
   return formatter.format(date);
 };
 
+export const formatRoles = function (roles: string[]): string {
+  // return roles.sort().join(', ');
+  const capitalizedRoles = roles.map(
+    (role) => role.charAt(0).toUpperCase() + role.slice(1),
+  );
+  return capitalizedRoles.sort((a, b) => a.localeCompare(b)).join(', ');
+};
+
+export const formatAvatarName = (name: string) => {
+  return name
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase())
+    .join('');
+};
 export const generateYAxis = (revenue: Revenue[]) => {
   // Calculate what labels we need to display on the y-axis
   // based on highest record and in 1000s

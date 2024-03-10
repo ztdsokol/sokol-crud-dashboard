@@ -18,7 +18,7 @@ export default function Form({
             htmlFor="name"
             className="mb-2 block text-sm font-medium text-gray-900"
           >
-            Name
+            Ime i prezime
           </label>
           <input
             type="text"
@@ -66,10 +66,66 @@ export default function Form({
             </select> */}
           </div>
         </div>
+        {/* Birthdate */}
+        <div className="mb-4">
+          <label
+            htmlFor="birthdate"
+            className="mb-2 block text-sm font-medium text-gray-900"
+          >
+            Birthday
+          </label>
+          <input
+            type="date"
+            name="birthdate"
+            className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+          />
+        </div>
+        {/* Contact Person */}
+        <div className="mb-4">
+          <label
+            htmlFor="contact_name"
+            className="mb-2 block text-sm font-medium text-gray-900"
+          >
+            Kontakt osoba
+          </label>
+          <input
+            type="text"
+            name="contact_name"
+            className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+          />
+        </div>
+        {/* OIB */}
+        <div className="mb-4">
+          <label
+            htmlFor="customer_oib"
+            className="mb-2 block text-sm font-medium text-gray-900"
+          >
+            OIB
+          </label>
+          <input
+            type="text"
+            name="customer_oib"
+            className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+          />
+        </div>
+        {/* Phone */}
+        <div className="mb-4">
+          <label
+            htmlFor="contact_phone"
+            className="mb-2 block text-sm font-medium text-gray-900"
+          >
+            Kontakt telefon
+          </label>
+          <input
+            type="text"
+            name="contact_phone"
+            className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+          />
+        </div>
         {/* Email */}
         <div className="mb-4">
           <label
-            htmlFor="name"
+            htmlFor="email"
             className="mb-2 block text-sm font-medium text-gray-900"
           >
             Email
@@ -82,6 +138,63 @@ export default function Form({
             required
           />
         </div>
+        {/* Address */}
+
+        <div className="mb-4">
+          <label
+            htmlFor="address"
+            className="mb-2 block text-sm font-medium text-gray-900"
+          >
+            Adresa
+          </label>
+          <input
+            type="text"
+            name="address"
+            className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+          />
+        </div>
+        {/* Notes */}
+        <div className="mb-4">
+          <label
+            htmlFor="notes"
+            className="mb-2 block text-sm font-medium text-gray-900"
+          >
+            Dodatne napomene
+          </label>
+          <textarea
+            name="notes"
+            className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+          />
+        </div>
+        {/* Discount */}
+        <div className="mb-4">
+          <label
+            htmlFor="discount"
+            className="mb-2 block text-sm font-medium text-gray-900"
+          >
+            Popust
+          </label>
+          <input
+            type="number"
+            name="discount"
+            className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+          />
+        </div>
+        {/* One time discount */}
+        <div className="mb-4">
+          <label
+            htmlFor="one_time_discount"
+            className="mb-2 block text-sm font-medium text-gray-900"
+          >
+            Jednokratni popust
+          </label>
+          <input
+            type="number"
+            name="one_time_discount"
+            className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+          />
+        </div>
+        {/* Image */}
         <div className="mb-4">
           <label
             htmlFor="image_url"

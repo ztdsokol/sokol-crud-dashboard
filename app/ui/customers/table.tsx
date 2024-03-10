@@ -1,8 +1,14 @@
 import Image from 'next/image';
 import { UpdateInvoice, DeleteInvoice } from '@/app/ui/invoices/buttons';
 import InvoiceStatus from '@/app/ui/invoices/status';
-import { formatDateToLocal, formatCurrency } from '@/app/lib/utils';
+import {
+  formatDateToLocal,
+  formatCurrency,
+  formatAvatarName,
+} from '@/app/lib/utils';
 import { fetchFilteredCustomers, fetchMyCustomers } from '@/app/lib/data';
+import { UpdateCustomer } from './buttons';
+import Link from 'next/link';
 
 export default async function CustomersTable({
   query,
@@ -40,7 +46,7 @@ export default async function CustomersTable({
                 </div>
                 <div className="flex w-full items-center justify-between pt-4">
                   <div className="flex justify-end gap-2">
-                    <UpdateInvoice id={customer.id} />
+                    <UpdateCustomer id={customer.id} />
                     <DeleteInvoice id={customer.id} />
                   </div>
                 </div>
@@ -54,7 +60,7 @@ export default async function CustomersTable({
                   Ime i prezime
                 </th>
                 <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
-                  Vrsta člana
+                  Vrsta članastva
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
                   Email
@@ -72,16 +78,24 @@ export default async function CustomersTable({
                   className="w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
                 >
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
-                    <div className="flex items-center gap-3">
-                      <Image
-                        src={customer.image_url}
-                        className="rounded-full"
-                        width={28}
-                        height={28}
-                        alt={`${customer.name}'s profile picture`}
-                      />
-                      <p>{customer.name}</p>
-                    </div>
+                    <Link href={`/dashboard/customers/${customer.id}`}>
+                      <div className="flex items-center gap-3">
+                        {customer.image_url && customer.image_url !== 'NULL' ? (
+                          <Image
+                            src={customer.image_url}
+                            className="rounded-full"
+                            alt={`${customer.name}'s profile picture`}
+                            width={28}
+                            height={28}
+                          />
+                        ) : (
+                          <div className="flex h-7 w-7 flex-col items-center justify-center rounded-full border border-black  bg-slate-100 p-2 text-xs font-bold">
+                            {formatAvatarName(customer.name)}
+                          </div>
+                        )}
+                        <p>{customer.name}</p>
+                      </div>
+                    </Link>
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
                     {Array.isArray(customer.roles) && customer.roles.join(', ')}
@@ -92,8 +106,7 @@ export default async function CustomersTable({
 
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
-                      <UpdateInvoice id={customer.id} />
-                      <DeleteInvoice id={customer.id} />
+                      <UpdateCustomer id={customer.id} />
                     </div>
                   </td>
                 </tr>

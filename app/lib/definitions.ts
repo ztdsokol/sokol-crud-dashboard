@@ -16,6 +16,7 @@ export type Customer = {
   image_url: string;
   customer_role_id: string;
   customer_status: 'active' | 'inactive';
+  birthdate: string;
 };
 
 export type CustomerRole = {
@@ -113,8 +114,17 @@ export type CustomerRolesField = {
 export type CustomerForm = {
   id: string;
   name: string;
-  cutomer_role_id: string;
+  customer_role_id: string;
+  birthdate: string;
+  customer_oib: string;
+  contact_name: string;
+  contact_phone: string;
   email: string;
-  image_url: string;
+  address: string;
+  notes: string;
   customer_status: 'active' | 'inactive';
+  discount: number;
+  one_time_discount: number;
+  image_url: string;
+  roles: string[];
 };

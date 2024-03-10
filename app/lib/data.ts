@@ -8,6 +8,8 @@ import {
   User,
   Revenue,
   CustomersTable,
+  CustomerForm,
+  CustomerRolesField,
 } from './definitions';
 import { formatCurrency } from './utils';
 import { unstable_noStore as noStore } from 'next/cache';
@@ -94,7 +96,7 @@ export async function fetchCardData() {
   }
 }
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 15;
 export async function fetchFilteredInvoices(
   query: string,
   currentPage: number,
@@ -199,6 +201,24 @@ export async function fetchCustomers() {
   }
 }
 
+export async function fetchCustomerRoles() {
+  try {
+    const data = await sql<CustomerRolesField>`
+      SELECT
+        id,
+        name
+      FROM customer_roles
+      ORDER BY name ASC
+    `;
+
+    const customer_roles = data.rows;
+    return customer_roles;
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to fetch all customers.');
+  }
+}
+
 export async function fetchMyCustomers(query: string, currentPage: number) {
   noStore();
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -283,6 +303,137 @@ export async function fetchFilteredCustomers(query: string) {
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch customer table.');
+  }
+}
+
+/* export async function fetchCustomerById(id: string) {
+  noStore();
+  console.log('Fetching customer with id:', id);
+
+  try {
+    const data = await sql<CustomersTableType>`
+    SELECT
+    customers.id,
+    customers.name,
+    array_remove(array_agg(customer_roles.name), NULL) as roles,
+    customers.birthdate,
+    customers.customer_oib,
+    customers.contact_name,
+    customers.contact_phone,
+    customers.email,
+    customers.address,
+    customers.notes,
+    customers.customer_status,
+    customers.discount,
+    customers.one_time_discount,
+    customers.image_url
+  FROM customers
+  LEFT JOIN customer_roles ON customer_roles.id = ANY(customers.customer_role_id)
+  WHERE
+    customers.id = ${id}
+  GROUP BY customers.id;
+    `;
+
+    const customer = data.rows.map((customer) => ({
+      ...customer,
+    }));
+    console.log(customer); // customer is an empty array []
+
+    return customer[0];
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch customer.');
+  }
+} */
+
+export async function fetchMyCustomerById(id: string) {
+  noStore();
+
+  try {
+    const data = await sql<CustomerForm>`
+SELECT
+  customers.id,
+  customers.name,
+  array_remove(array_agg(customer_roles.name), NULL) as roles,
+  customers.birthdate,
+  customers.customer_oib,
+  customers.contact_name,
+  customers.contact_phone,
+  customers.email,
+  customers.address,
+  customers.notes,
+  customers.customer_status,
+  customers.discount,
+  customers.one_time_discount,
+  customers.image_url
+FROM customers
+LEFT JOIN customer_roles ON customer_roles.id = ANY(customers.customer_role_id)
+WHERE customers.id = ${id}
+GROUP BY 
+  customers.id,
+  customers.name,
+  customers.birthdate,
+  customers.customer_oib,
+  customers.contact_name,
+  customers.contact_phone,
+  customers.email,
+  customers.address,
+  customers.notes,
+  customers.customer_status,
+  customers.discount,
+  customers.one_time_discount,
+  customers.image_url;
+`;
+
+    const customer = data.rows.map((customer) => ({
+      ...customer,
+      // Convert amount from cents to dollars
+    }));
+
+    return customer[0];
+  } catch (error) {
+    console.error('Error fetching customer with id:', id, 'Error:', error);
+    throw error;
+  }
+}
+
+export async function fetchCustomerById(id: string) {
+  noStore();
+  console.log('Fetching customer with id:', id);
+
+  try {
+    const data = await sql<CustomerForm>`
+    SELECT
+    customers.id,
+    customers.name,
+    array_remove(array_agg(customer_roles.name), NULL) as roles,
+    customers.birthdate,
+    customers.customer_oib,
+    customers.contact_name,
+    customers.contact_phone,
+    customers.email,
+    customers.address,
+    customers.notes,
+    customers.customer_status,
+    customers.discount,
+    customers.one_time_discount,
+    customers.image_url
+  FROM customers
+  LEFT JOIN customer_roles ON customer_roles.id = ANY(customers.customer_role_id)
+  WHERE
+    customers.id = ${id}
+  GROUP BY customers.id;
+    `;
+
+    const customer = data.rows.map((customer) => ({
+      ...customer,
+    }));
+    console.log(customer); // customer is an empty array []
+
+    return customer[0];
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch customer.');
   }
 }
 
